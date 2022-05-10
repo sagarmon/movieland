@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 
 import MovieCard from './MovieCard';
@@ -11,12 +12,25 @@ const App = () => {
     const [movies, setMovies] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
 
-    const searchMovies = async (title) => {
-        const response = await fetch(`${API_URL}&s=${title}`);
-        const data = await response.json();
+    // // This is method 1 of fetching data using fetch with async, await
+    // const searchMovies = async (title) => {
+    //     const response = await fetch(`${API_URL}&s=${title}`);
+    //     const data = await response.json();
 
-        setMovies(data.Search);
-    }
+    //     setMovies(data.Search);
+    // };
+
+    // This is method 2 of fetching data using axios with async, await
+    const searchMovies = async (title) => {
+        try {
+            const res = await axios.get(`${API_URL}&s=${title}`);
+
+            setMovies(res.data.Search);
+
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     useEffect(() => {
         searchMovies('Superman');
